@@ -1,14 +1,17 @@
 name: Build and Notify
 
 on:
-  release:
-    types: [created]
+  push:
+    branches: ["main"]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
+      - name: Checkout Repository
+        run: git clone https://github.com/morad00/ninjaz.git
+
       - name: Checkout Repository
         uses: actions/checkout@v2
 
