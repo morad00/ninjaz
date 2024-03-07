@@ -1,0 +1,4 @@
+enum PostsFailures {
+  networkError,
+  emptyList,
+}
