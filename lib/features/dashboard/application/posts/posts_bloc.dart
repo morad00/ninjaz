@@ -34,11 +34,10 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         postsPageIndex: event.pageIndex,
       ),
     );
-    if (BlocProvider.of<ConnectionStatusBloc>(NavigationService().navigationKey.currentContext!).state
-        is DisConnected) {
+    if (BlocProvider.of<ConnectionStatusBloc>(navigationService.navigationKey.currentContext!).state is DisConnected) {
       List<PostsListData> offlinePosts = [];
       final res = await RealmDatabase.getPosts();
-      if(res.isNotEmpty){
+      if (res.isNotEmpty) {
         offlinePosts = res.map((postItem) {
           return PostsListData(
             id: postItem.id,
