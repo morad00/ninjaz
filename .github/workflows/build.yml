@@ -9,8 +9,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout Repository
-        run: git clone https://github.com/morad00/ninjaz.git
 
       - name: Checkout Repository
         uses: actions/checkout@v2
