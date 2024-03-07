@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ninjaz/common/data/realm/post_database.dart';
+import 'package:ninjaz/common/data/realm/realm_post.dart';
 import 'package:ninjaz/common/router/navigation_service.dart';
+import 'package:ninjaz/features/connection_status/applicataion/connection_status_bloc.dart';
 import 'package:ninjaz/features/dashboard/domain/i_posts_repo.dart';
 import 'package:ninjaz/features/dashboard/domain/model/posts_model.dart';
 import 'package:ninjaz/features/dashboard/domain/posts_failures.dart';
@@ -31,27 +34,77 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         postsPageIndex: event.pageIndex,
       ),
     );
-    final failureOrSuccess = await _repo.getAllPosts(
-      pageIndex: event.pageIndex,
-    );
-    failureOrSuccess.fold(
-      (l) async {
-        if (l == PostsFailures.networkError) {
+    if (BlocProvider.of<ConnectionStatusBloc>(NavigationService().navigationKey.currentContext!).state
+        is DisConnected) {
+      List<PostsListData> offlinePosts = [];
+      final res = await RealmDatabase.getPosts();
+      if(res.isNotEmpty){
+        offlinePosts = res.map((postItem) {
+          return PostsListData(
+            id: postItem.id,
+            likes: postItem.likesCount,
+            publishDate: postItem.publishDate,
+            image: postItem.imageUrl,
+            tags: postItem.tags,
+            text: postItem.text,
+            owner: Owner(
+              id: postItem.ownerId,
+              title: postItem.ownerTitle,
+              firstName: postItem.ownerFirstName,
+              lastName: postItem.ownerLastName,
+              picture: postItem.ownerPicture,
+            ),
+          );
+        }).toList();
+      }
+      emit(
+        state.copyWith(
+          isLoadingTab: false,
+          postsList: offlinePosts,
+          showErrorPage: false,
+        ),
+      );
+    } else {
+      final failureOrSuccess = await _repo.getAllPosts(
+        pageIndex: event.pageIndex,
+      );
+      failureOrSuccess.fold(
+        (l) async {
+          if (l == PostsFailures.networkError) {
+            emit(
+              state.copyWith(
+                isLoadingTab: false,
+                showErrorPage: true,
+              ),
+            );
+          }
+        },
+        (r) async {
           emit(
             state.copyWith(
               isLoadingTab: false,
-              showErrorPage: true,
+              postsList: event.loadMore ? state.postsList + r.data : r.data,
             ),
           );
-        }
-      },
-      (r) => emit(
-        state.copyWith(
-          isLoadingTab: false,
-          postsList: event.loadMore ? state.postsList + r.data : r.data,
-        ),
-      ),
-    );
+          final realmPosts = r.data
+              .map((post) => PostItem(
+                    post.id,
+                    post.text,
+                    post.image,
+                    post.publishDate,
+                    post.likes,
+                    post.owner.id,
+                    post.owner.title,
+                    post.owner.firstName,
+                    post.owner.lastName,
+                    post.owner.picture,
+                    tags: post.tags,
+                  ))
+              .toList();
+          await RealmDatabase.savePosts(realmPosts);
+        },
+      );
+    }
   }
 
   FutureOr<void> _onRefreshPostsList(RefreshPostsList event, Emitter<PostsState> emit) async {
@@ -64,23 +117,10 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
           postsList: [],
         ),
       );
-      final failureOrSuccess = await _repo.getAllPosts(pageIndex: 0);
-      failureOrSuccess.fold(
-        (l) async {
-          if (l == PostsFailures.networkError) {
-            emit(
-              state.copyWith(
-                isLoadingTab: false,
-                showErrorPage: true,
-              ),
-            );
-          }
-        },
-        (r) => emit(
-          state.copyWith(
-            isLoadingTab: false,
-            postsList: r.data,
-          ),
+      add(
+        const GetPosts(
+          loadMore: true,
+          pageIndex: 0,
         ),
       );
     }

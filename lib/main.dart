@@ -6,6 +6,7 @@ import 'package:ninjaz/common/router/app_routes.dart';
 import 'package:ninjaz/common/router/navigation_service.dart';
 import 'package:ninjaz/features/auth/application/auth_bloc.dart';
 import 'package:ninjaz/features/bottom_navigation/application/bottom_navigation_bloc.dart';
+import 'package:ninjaz/features/connection_status/applicataion/connection_status_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 void main() {
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
       enableScrollWhenRefreshCompleted: true,
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<ConnectionStatusBloc>(
+            create: (context) => ConnectionStatusBloc(),
+          ),
           BlocProvider<AuthBloc>(
             create: (context) => AuthBloc()..add(AppStartedEvent()),
           ),

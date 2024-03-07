@@ -16,7 +16,29 @@ class PostsList extends StatelessWidget {
         if (state.isLoadingTab) {
           return const Center(child: CupertinoActivityIndicator(color: AppColors.primaryColor));
         } else if (state.showErrorPage) {
-          return const Center(child: Text("Something went wrong"));
+          return Center(
+            child: FilledButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 5,
+                backgroundColor: AppColors.secondaryColor,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+              onPressed: () {
+                PostsEvents.getPosts(context, pageIndex: 0, loadMore: false);
+              },
+              child: const Text("No Internet connection\nRetry connecting",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  )),
+            ),
+          );
+        } else if (state.postsList.isEmpty) {
+          return const Center(child: Text("Empty List"));
         } else {
           return SmartRefresher(
             controller: state.tabRefreshController,
@@ -42,7 +64,12 @@ class PostsList extends StatelessWidget {
                         Row(
                           children: [
                             CircleAvatar(
-                              backgroundImage: NetworkImage(postItem.owner.picture),
+                              child: Image.network(
+                                postItem.owner.picture,
+                                errorBuilder: (context, error, stackTrace) => Image.asset(
+                                  AssetPaths.imgIcon,
+                                ),
+                              ),
                             ),
                             const SizedBox(width: 10),
                             Text(
