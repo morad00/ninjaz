@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ninjaz/common/router/app_routes.dart';
 import 'package:ninjaz/features/dashboard/presentation/dashboard_screen.dart';
-import 'package:ninjaz/features/splash_screen.dart';
+import 'package:ninjaz/features/auth/presentation/splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 class AppRouter {

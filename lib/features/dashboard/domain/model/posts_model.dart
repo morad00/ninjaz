@@ -1,16 +1,21 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 PostsListModel postsListModelFromJson(String str) => PostsListModel.fromJson(json.decode(str));
 
 String postsListModelToJson(PostsListModel data) => json.encode(data.toJson());
 
-class PostsListModel {
+class PostsListModel extends Equatable {
+  @override
+  List<Object> get props => [data, total, page, limit];
+
   final List<PostsListData> data;
   final int total;
   final int page;
   final int limit;
 
-  PostsListModel({
+  const PostsListModel({
     required this.data,
     required this.total,
     required this.page,
@@ -32,7 +37,18 @@ class PostsListModel {
       };
 }
 
-class PostsListData {
+class PostsListData extends Equatable {
+  @override
+  List<Object> get props => [
+        id,
+        image,
+        likes,
+        tags,
+        text,
+        publishDate,
+        owner,
+      ];
+
   final String id;
   final String image;
   final int likes;
@@ -41,7 +57,7 @@ class PostsListData {
   final DateTime publishDate;
   final Owner owner;
 
-  PostsListData({
+  const PostsListData({
     required this.id,
     required this.image,
     required this.likes,
@@ -72,14 +88,17 @@ class PostsListData {
       };
 }
 
-class Owner {
+class Owner extends Equatable {
+  @override
+  List<Object> get props => [id, title, firstName, lastName, picture];
+
   final String id;
   final String title;
   final String firstName;
   final String lastName;
   final String picture;
 
-  Owner({
+  const Owner({
     required this.id,
     required this.title,
     required this.firstName,

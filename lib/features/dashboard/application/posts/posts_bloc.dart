@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ninjaz/common/router/navigation_service.dart';
+import 'package:ninjaz/features/dashboard/domain/i_posts_repo.dart';
 import 'package:ninjaz/features/dashboard/domain/model/posts_model.dart';
 import 'package:ninjaz/features/dashboard/domain/posts_failures.dart';
-import 'package:ninjaz/features/dashboard/infrastructure/remote/posts_repo.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 part 'posts_event.dart';
@@ -13,9 +14,11 @@ part 'posts_event.dart';
 part 'posts_state.dart';
 
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
-  final PostsRepo _postsRepo = PostsRepo();
+  final IPostsRepo _repo;
+  final PostsState initialState;
+  final NavigationService navigationService;
 
-  PostsBloc() : super(PostsState.initial()) {
+  PostsBloc(this._repo, this.initialState, this.navigationService) : super(initialState) {
     on<GetPosts>(_onGetPosts);
     on<RefreshPostsList>(_onRefreshPostsList);
     on<LoadMorePosts>(_onLoadMorePosts);
@@ -28,7 +31,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         postsPageIndex: event.pageIndex,
       ),
     );
-    final failureOrSuccess = await _postsRepo.getAllPosts(
+    final failureOrSuccess = await _repo.getAllPosts(
       pageIndex: event.pageIndex,
     );
     failureOrSuccess.fold(
@@ -61,7 +64,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
           postsList: [],
         ),
       );
-      final failureOrSuccess = await _postsRepo.getAllPosts(pageIndex: 0);
+      final failureOrSuccess = await _repo.getAllPosts(pageIndex: 0);
       failureOrSuccess.fold(
         (l) async {
           if (l == PostsFailures.networkError) {

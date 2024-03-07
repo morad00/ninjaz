@@ -4,7 +4,6 @@ class PostsState extends Equatable {
   final bool isLoadingTab;
   final bool showErrorPage;
   final int postsPageIndex;
-  final bool isHorizontal;
   final RefreshController tabRefreshController;
   final List<PostsListData> postsList;
 
@@ -13,7 +12,6 @@ class PostsState extends Equatable {
         isLoadingTab,
         showErrorPage,
         postsPageIndex,
-        isHorizontal,
         tabRefreshController,
         postsList,
       ];
@@ -22,7 +20,6 @@ class PostsState extends Equatable {
     required this.isLoadingTab,
     required this.showErrorPage,
     required this.postsPageIndex,
-    required this.isHorizontal,
     required this.tabRefreshController,
     required this.postsList,
   });
@@ -31,7 +28,6 @@ class PostsState extends Equatable {
         isLoadingTab: false,
         showErrorPage: false,
         postsPageIndex: 0,
-        isHorizontal: false,
         tabRefreshController: RefreshController(),
         postsList: const [],
       );
@@ -40,7 +36,6 @@ class PostsState extends Equatable {
     bool? isLoadingTab,
     bool? showErrorPage,
     int? postsPageIndex,
-    bool? isHorizontal,
     RefreshController? tabRefreshController,
     List<PostsListData>? postsList,
   }) {
@@ -48,7 +43,6 @@ class PostsState extends Equatable {
       isLoadingTab: isLoadingTab ?? this.isLoadingTab,
       showErrorPage: showErrorPage ?? this.showErrorPage,
       postsPageIndex: postsPageIndex ?? this.postsPageIndex,
-      isHorizontal: isHorizontal ?? this.isHorizontal,
       tabRefreshController: tabRefreshController ?? this.tabRefreshController,
       postsList: postsList ?? this.postsList,
     );
