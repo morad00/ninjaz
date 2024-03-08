@@ -38,4 +38,4 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Test Email
           to: mohamed.murad.taha@gmail.com
-          body: This is a test email sent from GitHub Actions.
+          body: 'Your APK has been successfully built.'
