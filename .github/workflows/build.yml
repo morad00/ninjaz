@@ -14,20 +14,38 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-#      - name: Flutter clean
-#        run: flutter clean
-#
-#      - name: Install dependencies
-#        run: flutter pub get
-#
-#      - name: Build dart runners
-#        run: dart run build_runner build
-#
-#      - name: Run Flutter Tests
-#        run: flutter test
-#
-#      - name: Build APK
-#        run: flutter build apk --release
+      - name: Extract version number
+        id: extract_version
+        run: |
+          VERSION=$(grep -oP 'version: \K.*' pubspec.yaml)
+          echo "::set-output name=version::$VERSION"
+
+      - name: Flutter clean
+        run: flutter clean
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build dart runners
+        run: dart run build_runner build
+
+      - name: Run Flutter Tests
+        run: flutter test
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Attach APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Generate release date
+        id: generate_release_date
+        run: |
+          RELEASE_DATE=$(date -u +"%Y-%m-%d %H:%M:%S")
+          echo "::set-output name=release_date::$RELEASE_DATE"
 
       - name: Send APK Release via Mail (SMTP)
         uses: dawidd6/action-send-mail@v3
@@ -38,5 +56,24 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           from: ${{ secrets.EMAIL_USERNAME }}
           to: mohamed.murad.taha@gmail.com
-          subject: Test Email
-          body: 'Your APK has been successfully built.'
+          subject: "Task Completed: APK Release - Version ${{ steps.extract_version.outputs.version }}"
+          body: |
+            Dear Mourad,
+
+            I am writing to inform you that I have successfully completed the Ninjaz task.
+
+            The APK has been built and is ready for release.
+
+            APK Release Information:
+            - Version: ${{ steps.extract_version.outputs.version }}
+            - Build Number: ${{ github.run_number }}
+            - Release Date: ${{ steps.generate_release_date.outputs.release_date }}
+
+            Please find the attached APK file for your review and distribution.
+
+            If you have any questions or require further information, please feel free to contact me.
+
+            Thank you for the opportunity.
+
+            Best regards,
+            Mohamed Mourad
