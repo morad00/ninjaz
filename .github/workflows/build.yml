@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: build dart runners
+      - name: Build dart runners
         run: dart run build_runner build
 
       - name: Run Flutter Tests
@@ -28,3 +28,19 @@ jobs:
 
       - name: Build APK
         run: flutter build apk --release
+
+      - name: Send APK Release via Mail (SMTP)
+        uses: hilarion5/send-mail@v1
+        with:
+          smtp-server: smtp.example.com
+          smtp-port: 465
+          smtp-secure: true
+          from-email: mohamed.murad.taha@gmail.com
+          to-email: moh.mourad9519@gmail.com
+          username: "Github"
+          password: "nwhk oirn aldp laoq"
+          subject: Test Email
+          body: This is a test email sent from GitHub Actions.
+          html: |
+            <h1>This is a test email</h1>
+            <p>Test Paragraph</p>
