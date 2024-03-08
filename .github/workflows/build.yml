@@ -57,8 +57,7 @@ jobs:
           from: ${{ secrets.EMAIL_USERNAME }}
           to: mohamed.murad.taha@gmail.com
           subject: "Task Completed: APK Release - Version ${{ steps.extract_version.outputs.version }}"
-          with:
-            attachments: build/app/outputs/flutter-apk/app-release.apk
+          attachments: build/app/outputs/flutter-apk/app-release.apk
           body: |
             Dear Mourad,
 
