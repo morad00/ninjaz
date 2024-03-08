@@ -55,21 +55,24 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           from: ${{ secrets.EMAIL_USERNAME }}
-          to: moh.mourad9519@gmail.com
-          cc: amira.osama.anwar0@gmail.com
-          subject: "Task Completed: APK Release - Version ${{ steps.extract_version.outputs.version }}"
+          to: karim@ninjaz.ae
+          cc: talent@ninjaz.ae
+          subject: "Ninjaz Mobile Developer Task -Mohamed Murad"
 #          attachments: build/app/outputs/flutter-apk/app-release.apk
           body: |
-            Dear Mourad,
+            Dear Karim,
 
             I am writing to inform you that I have successfully completed the Ninjaz task with all features mentioned.
 
-            The APK has been built and is ready for release.
+            This email is generated from GitHub Actions as part of the automated build and release process.
+            You can find the repository containing the source code for this project at the following URL:
+            https://github.com/morad00/ninjaz
+            
             APK Release Information:
             - Version: ${{ steps.extract_version.outputs.version }}
             - Build Number: ${{ github.run_number }}
             - Release Date: ${{ steps.generate_release_date.outputs.release_date }}
-
+            
             Unfortunately, I couldn't attach the APK to this email due to Google's message size limits. However, I have manually uploaded the APK to Google Drive for your convenience. You can download the APK using the following link:
             https://drive.google.com/file/d/11Q2voPrcgCEPCfZoj_DyTdejSmQYc0c-/view?usp=sharing
             I opted for this manual method to ensure timely completion within the task deadline.
