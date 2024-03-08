@@ -14,8 +14,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Flutter clean
+        run: flutter clean
+
       - name: Install dependencies
         run: flutter pub get
+
+      - name: build dart runners
+        run: dart run build_runner build
 
       - name: Run Flutter Tests
         run: flutter test
