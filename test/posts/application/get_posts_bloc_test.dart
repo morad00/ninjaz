@@ -4,18 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:ninjaz/common/data/realm/post_database.dart';
 import 'package:ninjaz/common/router/navigation_service.dart';
+import 'package:ninjaz/features/connection_status/applicataion/connection_status_bloc.dart';
 import 'package:ninjaz/features/dashboard/application/posts/posts_bloc.dart';
 import 'package:ninjaz/features/dashboard/domain/i_posts_repo.dart';
 import 'package:ninjaz/features/dashboard/domain/model/posts_model.dart';
 
 import 'get_posts_bloc_test.mocks.dart';
 
-@GenerateMocks([IPostsRepo, NavigationService])
+@GenerateMocks([IPostsRepo, NavigationService, ConnectionStatusBloc, RealmDatabase])
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   MockIPostsRepo mockIPostsRepo = MockIPostsRepo();
   MockNavigationService mockNavigationService = MockNavigationService();
+  MockConnectionStatusBloc mockConnectionStatusBloc = MockConnectionStatusBloc();
+  MockRealmDatabase mockRealmDatabase = MockRealmDatabase();
+
   final PostsState state = PostsState.initial();
   final int pageIndex = 0;
   PostsListModel successFullPostsListModel = PostsListModel(
@@ -83,6 +88,7 @@ void main() {
     blocTest<PostsBloc, PostsState>(
       'Successful Getting posts list for the first time',
       setUp: () {
+        when(mockConnectionStatusBloc.state).thenAnswer((_) => const Connected());
         when(mockIPostsRepo.getAllPosts(pageIndex: pageIndex)).thenAnswer((_) async {
           return Right(successFullPostsListModel);
         });
@@ -91,6 +97,8 @@ void main() {
         mockIPostsRepo,
         state,
         mockNavigationService,
+        mockConnectionStatusBloc,
+        mockRealmDatabase,
       ),
       act: (bloc) => bloc.add(
         GetPosts(
@@ -115,6 +123,7 @@ void main() {
     blocTest<PostsBloc, PostsState>(
       'Successful refresh posts list',
       setUp: () {
+        when(mockConnectionStatusBloc.state).thenAnswer((_) => const Connected());
         when(mockIPostsRepo.getAllPosts(pageIndex: pageIndex)).thenAnswer((_) async {
           return Right(successFullPostsListModel);
         });
@@ -123,6 +132,8 @@ void main() {
         mockIPostsRepo,
         state,
         mockNavigationService,
+        mockConnectionStatusBloc,
+        mockRealmDatabase,
       ),
       act: (bloc) => bloc.add(const RefreshPostsList()),
       expect: () => <PostsState>[
@@ -143,6 +154,7 @@ void main() {
     blocTest<PostsBloc, PostsState>(
       'Successful Load more posts',
       setUp: () {
+        when(mockConnectionStatusBloc.state).thenAnswer((_) => const Connected());
         when(mockIPostsRepo.getAllPosts(pageIndex: pageIndex + 1)).thenAnswer((_) async {
           return Right(successFullLoadMorePostsListModel);
         });
@@ -151,8 +163,10 @@ void main() {
         mockIPostsRepo,
         state,
         mockNavigationService,
+        mockConnectionStatusBloc,
+        mockRealmDatabase,
       ),
-      act: (bloc) => bloc.add( LoadMorePosts(pageIndex: pageIndex+1)),
+      act: (bloc) => bloc.add(LoadMorePosts(pageIndex: pageIndex + 1)),
       expect: () => <PostsState>[
         state.copyWith(
           postsPageIndex: 1,

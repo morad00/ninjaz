@@ -2,29 +2,28 @@ import 'package:ninjaz/common/data/realm/realm_post.dart';
 import 'package:realm/realm.dart';
 
 class RealmDatabase {
-  static RealmDatabase? _singleton;
+  static RealmDatabase? _instance;
 
   RealmDatabase._internal();
 
   factory RealmDatabase() {
-    _singleton = _singleton ?? RealmDatabase._internal();
-    return _singleton!;
+    return _instance ??= RealmDatabase._internal();
   }
 
-  static Future<Realm> openDatabase() async {
+  Future<Realm> openDatabase() async {
     var config = Configuration.local([PostItem.schema]);
     return await Realm.open(config);
   }
 
-  static Future<void> savePosts(List<PostItem> posts) async {
+  Future<void> savePosts(List<PostItem> posts) async {
     final realm = await openDatabase();
     realm.write(() {
-      realm.addAll(posts,update: true);
+      realm.addAll(posts, update: true);
     });
     realm.close();
   }
 
-  static Future<List<PostItem>> getPosts() async {
+  Future<List<PostItem>> getPosts() async {
     try {
       final realm = await openDatabase();
       final results = realm.all<PostItem>();

@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<ConnectionStatusBloc>(
-            create: (context) => ConnectionStatusBloc(),
+            create: (context) => ConnectionStatusBloc()..add(CheckConnectionStatus()),
           ),
           BlocProvider<AuthBloc>(
             create: (context) => AuthBloc()..add(AppStartedEvent()),

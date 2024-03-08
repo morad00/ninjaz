@@ -20,8 +20,16 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final IPostsRepo _repo;
   final PostsState initialState;
   final NavigationService navigationService;
+  final ConnectionStatusBloc connectionStatusBloc;
+  final RealmDatabase realmDatabase;
 
-  PostsBloc(this._repo, this.initialState, this.navigationService) : super(initialState) {
+  PostsBloc(
+    this._repo,
+    this.initialState,
+    this.navigationService,
+    this.connectionStatusBloc,
+    this.realmDatabase,
+  ) : super(initialState) {
     on<GetPosts>(_onGetPosts);
     on<RefreshPostsList>(_onRefreshPostsList);
     on<LoadMorePosts>(_onLoadMorePosts);
@@ -34,9 +42,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         postsPageIndex: event.pageIndex,
       ),
     );
-    if (BlocProvider.of<ConnectionStatusBloc>(navigationService.navigationKey.currentContext!).state is DisConnected) {
+    if (connectionStatusBloc.state is DisConnected) {
       List<PostsListData> offlinePosts = [];
-      final res = await RealmDatabase.getPosts();
+      final res = await realmDatabase.getPosts();
       if (res.isNotEmpty) {
         offlinePosts = res.map((postItem) {
           return PostsListData(
@@ -100,7 +108,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
                     tags: post.tags,
                   ))
               .toList();
-          await RealmDatabase.savePosts(realmPosts);
+          await realmDatabase.savePosts(realmPosts);
         },
       );
     }

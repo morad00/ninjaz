@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ninjaz/common/router/blocs.dart';
-import 'package:ninjaz/features/connection_status/applicataion/connection_status_bloc.dart';
 import 'package:ninjaz/features/dashboard/application/posts/posts_bloc.dart';
 import 'package:ninjaz/features/dashboard/presentation/widgets/post_card_item.dart';
 
@@ -10,7 +9,6 @@ class PostsTabScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ConnectionStatusBloc>(context).add(CheckConnectionStatus());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Posts'),
