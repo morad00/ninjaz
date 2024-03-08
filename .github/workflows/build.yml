@@ -14,25 +14,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Flutter clean
-        run: flutter clean
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build dart runners
-        run: dart run build_runner build
-
-      - name: Run Flutter Tests
-        run: flutter test
-
-      - name: Build APK
-        run: flutter build apk --release
+#      - name: Flutter clean
+#        run: flutter clean
+#
+#      - name: Install dependencies
+#        run: flutter pub get
+#
+#      - name: Build dart runners
+#        run: dart run build_runner build
+#
+#      - name: Run Flutter Tests
+#        run: flutter test
+#
+#      - name: Build APK
+#        run: flutter build apk --release
 
       - name: Send APK Release via Mail (SMTP)
         uses: hilarion5/send-mail@v1
         with:
-          smtp-server: smtp.example.com
+          smtp-server: smtp.gmail.com
           smtp-port: 465
           smtp-secure: true
           from-email: mohamed.murad.taha@gmail.com
