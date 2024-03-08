@@ -37,8 +37,8 @@ jobs:
           smtp-secure: true
           from-email: moh.mourad9519@gmail.com
           to-email: mohamed.murad.taha@gmail.com
-          username: "Github"
-          password: "nwhk oirn aldp laoq"
+          username: "moh.mourad9519@gmail.com"
+          password: "jyvc avfs iqwz vzso"
           subject: Test Email
           body: This is a test email sent from GitHub Actions.
           html: |
