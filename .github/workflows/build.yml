@@ -57,24 +57,26 @@ jobs:
           from: ${{ secrets.EMAIL_USERNAME }}
           to: mohamed.murad.taha@gmail.com
           subject: "Task Completed: APK Release - Version ${{ steps.extract_version.outputs.version }}"
-          attachments: build/app/outputs/flutter-apk/app-release.apk
+#          attachments: build/app/outputs/flutter-apk/app-release.apk
           body: |
             Dear Mourad,
 
             I am writing to inform you that I have successfully completed the Ninjaz task with all features mentioned.
 
             The APK has been built and is ready for release.
-
             APK Release Information:
             - Version: ${{ steps.extract_version.outputs.version }}
             - Build Number: ${{ github.run_number }}
             - Release Date: ${{ steps.generate_release_date.outputs.release_date }}
 
-            Please find the attached APK file for your review. also you can find the the task repo here : https://github.com/morad00/ninjaz
-
+            Unfortunately, I couldn't attach the APK to this email due to Google's message size limits. However, I have manually uploaded the APK to Google Drive for your convenience. You can download the APK using the following link:
+            https://drive.google.com/file/d/1X7AbbTU0gRoIQaDZ8e_t5w2eckRVawJ8/view?usp=sharing
+            I opted for this manual method to ensure timely completion within the task deadline.
+            
             If you have any questions or require further information, please feel free to contact me.
-
+            
             Thank you for the opportunity.
 
             Best regards,
             Mohamed Mourad
+            mohamed.murad.taha@gmail.com
