@@ -35,8 +35,8 @@ jobs:
           smtp-server: smtp.gmail.com
           smtp-port: 465
           smtp-secure: true
-          from-email: mohamed.murad.taha@gmail.com
-          to-email: moh.mourad9519@gmail.com
+          from-email: moh.mourad9519@gmail.com
+          to-email: mohamed.murad.taha@gmail.com
           username: "Github"
           password: "nwhk oirn aldp laoq"
           subject: Test Email
