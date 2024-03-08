@@ -55,7 +55,8 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           from: ${{ secrets.EMAIL_USERNAME }}
-          to: mohamed.murad.taha@gmail.com
+          to: moh.mourad9519@gmail.com
+          cc: amira.osama.anwar0@gmail.com
           subject: "Task Completed: APK Release - Version ${{ steps.extract_version.outputs.version }}"
 #          attachments: build/app/outputs/flutter-apk/app-release.apk
           body: |
@@ -80,3 +81,4 @@ jobs:
             Best regards,
             Mohamed Mourad
             mohamed.murad.taha@gmail.com
+            https://www.linkedin.com/in/mohammed-mourad/
