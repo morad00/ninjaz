@@ -33,9 +33,10 @@ jobs:
         uses: dawidd6/action-send-mail@v3
         with:
           smtp-server_address: smtp.gmail.com
-          server_port: 587
+          server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: Test Email
+          from: ${{ secrets.EMAIL_USERNAME }}
           to: mohamed.murad.taha@gmail.com
+          subject: Test Email
           body: 'Your APK has been successfully built.'
