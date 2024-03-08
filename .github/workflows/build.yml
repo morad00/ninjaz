@@ -57,10 +57,12 @@ jobs:
           from: ${{ secrets.EMAIL_USERNAME }}
           to: mohamed.murad.taha@gmail.com
           subject: "Task Completed: APK Release - Version ${{ steps.extract_version.outputs.version }}"
+          with:
+            attachments: build/app/outputs/flutter-apk/app-release.apk
           body: |
             Dear Mourad,
 
-            I am writing to inform you that I have successfully completed the Ninjaz task.
+            I am writing to inform you that I have successfully completed the Ninjaz task with all features mentioned.
 
             The APK has been built and is ready for release.
 
@@ -69,7 +71,7 @@ jobs:
             - Build Number: ${{ github.run_number }}
             - Release Date: ${{ steps.generate_release_date.outputs.release_date }}
 
-            Please find the attached APK file for your review and distribution.
+            Please find the attached APK file for your review. also you can find the the task repo here : https://github.com/morad00/ninjaz
 
             If you have any questions or require further information, please feel free to contact me.
 
