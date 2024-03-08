@@ -71,7 +71,7 @@ jobs:
             - Release Date: ${{ steps.generate_release_date.outputs.release_date }}
 
             Unfortunately, I couldn't attach the APK to this email due to Google's message size limits. However, I have manually uploaded the APK to Google Drive for your convenience. You can download the APK using the following link:
-            https://drive.google.com/file/d/1X7AbbTU0gRoIQaDZ8e_t5w2eckRVawJ8/view?usp=sharing
+            https://drive.google.com/file/d/11Q2voPrcgCEPCfZoj_DyTdejSmQYc0c-/view?usp=sharing
             I opted for this manual method to ensure timely completion within the task deadline.
             
             If you have any questions or require further information, please feel free to contact me.
